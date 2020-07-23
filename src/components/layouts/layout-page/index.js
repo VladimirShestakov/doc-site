@@ -16,9 +16,9 @@ class LayoutPage extends Component {
 
     return (
       <div className="LayoutPage">
-        <div className="LayoutPage__header">{header}</div>
+        <header className="LayoutPage__header">{header}</header>
         <div className="LayoutPage__content">{children || content}</div>
-        <div className="LayoutPage__footer">{footer}</div>
+        <footer className="LayoutPage__footer">{footer}</footer>
       </div>
     );
   }

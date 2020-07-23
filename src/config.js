@@ -2,11 +2,17 @@ const isWeb = process.env.TARGET === 'web';
 
 let config = {
   dev: {
-    port: 8031,
+    port: 8141,
+  },
+  //  Параметры запуска сервера для рендера
+  ssr: {
+    host: 'localhost',
+    port: 8142,
+    preloadState: true,
   },
   api: {
     // Обычно хост на апи относительный и используется прокси для устранения CORS
-    baseURL: isWeb ? '' : 'http://localhost:8102',
+    baseURL: isWeb ? '' : 'http://localhost:8142',
     tokenHeader: 'X-Token',
 
     // Прокси на апи, если режим разработки или ssr без nginx
@@ -19,16 +25,9 @@ let config = {
     },
   },
 
-  routing: {
+  navigation: {
     basename: '/', // если фронт доступен по вложенному пути
     type: isWeb ? 'browser' : 'memory',
-  },
-
-  //  Параметры запуска сервера для рендера
-  ssr: {
-    host: 'localhost',
-    port: 8102,
-    preloadState: true,
   },
 };
 

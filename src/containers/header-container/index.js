@@ -1,90 +1,82 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { compose } from 'redux';
-import { withRouter } from 'react-router-dom';
-import session from '@store/session/actions';
+import React, { useMemo, useCallback } from 'react';
 import detectActive from '@utils/detect-active';
 import LayoutHeader from '@components/layouts/layout-header';
 import MenuTop from '@components/menus/menu-top';
-import Button from '@components/elements/button';
 import Logo from '@components/elements/logo';
+import useSelectorMap from '@utils/hooks/use-selector-map';
+import { useHistory, useLocation } from 'react-router-dom';
+import Button from '@components/elements/button';
 
-class HeaderContainer extends Component {
-  static propTypes = {
-    dispatch: PropTypes.func.isRequired,
-    location: PropTypes.object.isRequired,
-    history: PropTypes.object.isRequired,
-    session: PropTypes.object.isRequired,
+function HeaderContainer() {
+  const select = useSelectorMap(state => ({
+    session: state.session,
+  }));
+
+  const history = useHistory();
+  const location = useLocation();
+
+  const callbacks = {
+    onClickLogin: useCallback(() => {
+      history.push('/login');
+    }, []),
+    onClickRegistration: useCallback(() => {
+      history.push('/registration');
+    }, []),
+    onClickLogout: useCallback(() => {
+      //actions.session.clear();
+    }, []),
   };
 
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      items: detectActive(
-        [
-          { title: 'Главная', to: '/', active: false },
-          { title: 'О нас', to: '/about', active: false },
-          { title: 'Каталог', to: '/catalog', active: false },
-          { title: 'Админка', to: '/private', active: false },
-        ],
-        props.location,
-      ),
-    };
-  }
-
-  componentDidUpdate(nextProps) {
-    const { items } = this.state;
-    const { location } = this.props;
-
-    if (location !== nextProps.location) {
-      this.setState({
-        items: detectActive(items, nextProps.location),
-      });
-    }
-  }
-
-  onClickLogin = () => {
-    this.props.history.push('/login');
+  const options = {
+    links: useMemo(
+      () =>
+        detectActive(
+          [
+            { title: 'Главная', to: '/', active: false },
+            { title: 'Дока', to: '/docs/index', active: false },
+            { title: 'Новый проект', to: '/docs/1-new-project', active: false },
+            { title: 'Структура', to: '/docs/2-structure', active: false },
+            // { title: 'Каталог', to: '/catalog', active: false },
+            // { title: 'Админка', to: '/private', active: false },
+          ],
+          location,
+        ),
+      [location],
+    ),
   };
 
-  onClickLogout = () => {
-    session.clear();
+  const renders = {
+    right: useMemo(() => {
+      const items = [];
+
+      if (select.session.exists) {
+        items.push(
+          <Button key={1} type={'primary'} onClick={callbacks.onClickLogout}>
+            Выход
+          </Button>,
+        );
+      } else {
+        items.push(
+          <Button key={1} type={'primary'} onClick={callbacks.onClickLogin}>
+            Войти
+          </Button>,
+          <Button key={2} type={'primary'} onClick={callbacks.onClickRegistration}>
+            Регистрация
+          </Button>,
+        );
+      }
+
+      return items;
+    }, [select.session.exists]),
   };
 
-  renderRight() {
-    const { session } = this.props;
-    const items = [];
-
-    if (session.exists) {
-      items.push(
-        <Button key={1} theme={['clear-white', 'margins']} onClick={this.onClickLogout}>
-          Выход
-        </Button>,
-      );
-    } else {
-      items.push(
-        <Button key={1} theme={['clear-white', 'margins']} onClick={this.onClickLogin}>
-          Вход
-        </Button>,
-      );
-    }
-    return items;
-  }
-
-  render() {
-    const { items } = this.state;
-
-    return (
-      <LayoutHeader left={<Logo />} right={this.renderRight()} center={<MenuTop items={items} />} />
-    );
-  }
+  return (
+    <LayoutHeader
+      left={<Logo theme={'black'} />}
+      right={renders.right}
+      center={<MenuTop items={options.links} />}
+    />
+  );
 }
 
-export default compose(
-  withRouter,
-  connect(state => ({
-    session: state.session,
-  })),
-)(HeaderContainer);
+export default React.memo(HeaderContainer);

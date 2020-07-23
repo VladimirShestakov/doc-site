@@ -18,16 +18,22 @@
   "author": "Vladimir Shestakov boolive@yandex.ru",
   "license": "ISC",
   "dependencies": {
+    "@gerhobbelt/markdown-it-attrs": "^3.0.3-19",
     "@loadable/component": "^5.12.0",
     "@loadable/server": "^5.12.0",
     "antd": "^4.2.5",
     "axios": "^0.19.2",
     "classnames": "^2.2.6",
+    "cookie-parser": "^1.4.5",
     "express": "^4.17.1",
+    "github-markdown-css": "^4.0.0",
+    "highlight.js": "^10.1.0",
     "http-proxy": "^1.18.1",
     "js-base64": "^2.5.2",
     "lodash.get": "^4.4.2",
     "lodash.set": "^4.3.2",
+    "markdown-it": "^11.0.0",
+    "markdown-it-anchor": "^5.3.0",
     "merge-change": "^1.0.5",
     "module-alias": "^2.2.2",
     "prop-types": "^15.7.2",
@@ -40,7 +46,8 @@
     "react-router-dom": "^5.2.0",
     "redux": "^4.0.5",
     "redux-devtools-extension": "^2.13.8",
-    "redux-thunk": "^2.3.0"
+    "redux-thunk": "^2.3.0",
+    "uniqid": "^5.2.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.10.1",
@@ -61,6 +68,7 @@
     "babel-loader": "^8.1.0",
     "babel-plugin-import": "^1.13.0",
     "babel-plugin-react-transform": "^3.0.0",
+    "copy-webpack-plugin": "^6.0.3",
     "cross-env": "^7.0.2",
     "css-loader": "^3.5.3",
     "eslint": "^7.1.0",
@@ -79,6 +87,7 @@
     "optimize-css-assets-webpack-plugin": "^5.0.3",
     "prettier": "2.0.5",
     "progress-bar-webpack-plugin": "^2.1.0",
+    "raw-loader": "^4.0.1",
     "react-svg-loader": "^3.0.3",
     "react-transform-hmr": "^1.0.4",
     "style-loader": "^1.2.1",
@@ -97,6 +106,7 @@
     "@containers": "./src/containers/",
     "@store": "./src/store/",
     "@theme": "./src/theme",
-    "@utils": "./src/utils/"
+    "@utils": "./src/utils/",
+    "@content": "./content/"
   }
 }

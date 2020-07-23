@@ -20,6 +20,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const nodeExternals = require('webpack-node-externals');
 const ProgressBarPlugin = require('progress-bar-webpack-plugin');
+const CopyPlugin = require('copy-webpack-plugin');
 
 // For SSR
 const LoadablePlugin = require('@loadable/webpack-plugin');
@@ -59,6 +60,9 @@ let config = {
     }),
     new LoadablePlugin(),
     new MiniCssExtractPlugin(),
+    new CopyPlugin({
+      patterns: [{ from: '../content/assets', to: path.join(__dirname, 'dist', target, 'assets') }],
+    }),
   ],
   resolve: {
     extensions: ['.js', '.jsx'],
@@ -111,6 +115,10 @@ let config = {
           },
         ],
       },
+      {
+        test: /\.md$/i,
+        use: 'raw-loader',
+      },
     ],
   },
   stats: {
@@ -137,12 +145,12 @@ if (isWeb) {
       template: './index.html',
       filename: './index.html',
       title: 'App',
-      base: appConfig.routing.basename,
+      base: appConfig.navigation.basename,
     }),
   );
 }
 if (isNode) {
-  config.externals = ['react-helmet', '@loadable/component', nodeExternals()];
+  config.externals = ['react-helmet', '@loadable/component'/*, nodeExternals()*/];
 }
 
 if (isProduction) {

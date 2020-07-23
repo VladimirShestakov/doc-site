@@ -1,36 +1,71 @@
 import React, { useCallback } from 'react';
 import { Link } from 'react-router-dom';
-import modal from '@store/modal/actions';
 import LayoutPage from '@components/layouts/layout-page';
-import HeaderContainer from '@containers/header-container';
-import LayoutContent from '@components/layouts/layout-content';
-import Button from '@components/elements/button';
-import Accordion from '@components/elements/accordion';
+import LayoutMain from '@components/layouts/layout-main';
+
+import indexPage from '@content/index.md';
+import MarkdownIt from 'markdown-it';
+import hljs from 'highlight.js';
+import navigation from '@app/navigation';
+import 'highlight.js/styles/tomorrow-night-eighties.css';
+import '@theme/markdown/styke.css';
+import markdownItAttrs from '@gerhobbelt/markdown-it-attrs';
+
+const md = new MarkdownIt({
+  highlight: function (str, lang) {
+    if (lang && hljs.getLanguage(lang)) {
+      try {
+        return `<pre class="hljs"><code>${hljs.highlight(lang, str, true).value}</code></pre>`;
+      } catch (_) {}
+    }
+    return `<pre class="hljs"><code>${md.utils.escapeHtml(str)}</code></pre>`;
+  },
+  html: true
+});
+
+md.use(markdownItAttrs, {
+  // optional, these are default options
+  leftDelimiter: '{',
+  rightDelimiter: '}',
+  allowedAttributes: []  // empty array = all attributes are allowed
+});
 
 function Main() {
   const callbacks = {
-    showInfo: useCallback(async () => {
-      const result = await modal.open('info', {
-        overflowTransparent: false,
-        overflowClose: true,
-      });
-    }, []),
+    onClick: useCallback(e => {
+      const name = e.target.attributes.href.value.match(/^\/content\/(.+)\.md$/);
+      if (name) {
+        e.preventDefault();
+        console.log(name[1]);
+        navigation.push(`/docs/${name[1]}`);
+      }
+    }),
   };
 
   return (
-    <LayoutPage header={<HeaderContainer />}>
-      <LayoutContent>
-        <h1>Главная страница</h1>
-        <p>
-          <Link to="/private">Раздел для авторизованных</Link>
-        </p>
-        <p>
-          <Button onClick={callbacks.showInfo}>Показать модалку</Button>
-        </p>
-        <Accordion title={'Заголовок'}>
-          text for accordion, with other components, ex. <Button>Button</Button>
-        </Accordion>
-      </LayoutContent>
+    <LayoutPage>
+      <LayoutMain head={<span>React Skeleton</span>}>
+        <div
+          className="markdown-body"
+          dangerouslySetInnerHTML={{ __html: md.render(indexPage) }}
+          onClick={callbacks.onClick}
+        />
+        {/*<ul>*/}
+        {/*  <li>*/}
+        {/*    <Link to="/docs">Документация</Link>*/}
+        {/*  </li>*/}
+        {/*  <li>*/}
+        {/*    <a*/}
+        {/*      href="https://github.com/ylabio/react-skeleton"*/}
+        {/*      target="_blank"*/}
+        {/*      title="Fork from github.com"*/}
+        {/*      rel="noreferrer"*/}
+        {/*    >*/}
+        {/*      GitHub*/}
+        {/*    </a>*/}
+        {/*  </li>*/}
+        {/*</ul>*/}
+      </LayoutMain>
     </LayoutPage>
   );
 }

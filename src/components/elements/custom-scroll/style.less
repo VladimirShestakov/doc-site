@@ -1,0 +1,27 @@
+.simplebar-scrollbar {
+  &:before {
+    transition: background-color 0.3s ease;
+    background: #c4c4c4;
+    border-radius: 10px;
+    right: 0;
+    left: 0;
+  }
+}
+
+.simplebar-hover {
+  cursor: pointer;
+  z-index: 10000;
+
+  &:before {
+    background: #8c8c8c;
+    z-index: 10000;
+  }
+}
+
+.simplebar-track.simplebar-vertical {
+  width: 7px;
+}
+
+.simplebar-scrollbar.simplebar-visible:before {
+  opacity: 1;
+}

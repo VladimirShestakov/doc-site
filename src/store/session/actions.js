@@ -27,7 +27,7 @@ const actions = {
 
   // По токену восстановление информации об аккаунте
   remind: async () => {
-    const token = process.env.IS_WEB ? localStorage.getItem('token') : undefined;
+    const token = process.env.IS_WEB ? localStorage.getItem('token') : SSR.cookies?.token;
     if (token) {
       // Только для устоновки токена в http
       await actions.save({ token, wait: true, exists: false });
