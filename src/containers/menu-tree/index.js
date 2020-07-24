@@ -16,7 +16,7 @@ function MenuTree(props) {
     return (
       <Tree
         items={select.roots.length ? select.roots : []}
-        renderItem={item => <Link to={`/docs/${item.url}`}>{item.title}</Link>}
+        renderItem={item => <Link to={`${item.url}`}>{item.title}</Link>}
       />
     );
   }

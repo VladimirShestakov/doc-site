@@ -155,4 +155,4 @@ pm2 start process.json
 import Button from "@components/button"
 ```
 
-[Далее](/content/2-structure.md)
+[Далее](/content/docs/2-structure.mdre.md)

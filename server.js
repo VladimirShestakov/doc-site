@@ -21,10 +21,10 @@ app.use(express.urlencoded({ extended: true })); // for parsing application/x-ww
 app.use(cookieParser());
 
 // Запросы на файлы, которых нет. Отдача 404, чтобы не рендерить страницу
-app.get(/\.[a-z0-9]+$/, (req, res) => {
-  res.writeHead(404, { 'Content-Type': 'text/html; charset=utf-8' });
-  res.end('404');
-});
+// app.get(/\.[a-z0-9]+$/, (req, res) => {
+//   res.writeHead(404, { 'Content-Type': 'text/html; charset=utf-8' });
+//   res.end('404');
+// });
 
 // Прокси на внешний сервер по конфигу
 // const proxy = httpProxy.createProxyServer({});
@@ -74,7 +74,6 @@ app.get('/*', async (req, res) => {
       }
     }, 15000);
     res.cookie('stateSecret', stateSecret, { expires: false, httpOnly: true });
-
     res.writeHead(result.status, { 'Content-Type': 'text/html; charset=utf-8' });
     res.end(result.out);
   } catch (e) {
@@ -93,7 +92,7 @@ app.listen(config.ssr.port, config.ssr.host);
  */
 function render(params) {
   return new Promise((resolve, reject) => {
-    const worker = new Worker('./dist/node/main.js', { workerData: params });
+    const worker = new Worker('./dist/node/main.js', { workerData: params, stdout: true });
     worker.on('message', resolve);
     worker.on('error', reject);
     worker.on('exit', code => {

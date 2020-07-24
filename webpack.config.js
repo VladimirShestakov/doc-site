@@ -110,7 +110,9 @@ let config = {
           {
             loader: 'html-loader',
             options: {
-              /*minimize: isProduction*/
+              minimize: {
+                removeComments: false,
+              },
             },
           },
         ],
@@ -150,7 +152,7 @@ if (isWeb) {
   );
 }
 if (isNode) {
-  config.externals = ['react-helmet', '@loadable/component'/*, nodeExternals()*/];
+  config.externals = ['react-helmet', '@loadable/component' /*, nodeExternals()*/];
 }
 
 if (isProduction) {
@@ -165,7 +167,9 @@ if (isDevelopment && isWeb) {
     port: appConfig.dev.port,
     publicPath: config.output.publicPath,
     hot: true,
-    historyApiFallback: true,
+    historyApiFallback: {
+      disableDotRule: true,
+    },
     proxy: appConfig.api.proxy,
   };
 }

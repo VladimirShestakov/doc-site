@@ -1,7 +1,7 @@
 {
   "title": "React Skeleton",
   "key": 1,
-  "url": "../",
+  "url": "/",
   "children": [
     {
       "title": "Установка",
@@ -10,17 +10,17 @@
       "children": [
         {
           "title": "Новый проект",
-          "url": "installation/new-project",
+          "url": "/docs/installation/new-project.md",
           "key": 3
         },
         {
           "title": "Сборка",
-          "url": "installation/build",
+          "url": "/docs/installation/build.md",
           "key": 32
         },
         {
           "title": "Настройка",
-          "url": "installation/settings",
+          "url": "/docs/installation/settings.md",
           "key": 31
         }
       ]
@@ -33,7 +33,7 @@
         {
           "title": "Структура",
           "key": 5,
-          "url": "2-structure"
+          "url": "/docs/2-structure.md"
         }
       ]
     }

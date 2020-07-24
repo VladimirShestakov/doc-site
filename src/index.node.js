@@ -76,7 +76,7 @@ global.SSR = {
   out = insertText.before(out, '<div id="app">', html);
   out = insertText.after(out, '</body>', scriptState + scriptTags);
 
-  parentPort.postMessage({ out, state, status: 200 });
+  parentPort.postMessage({ out, state, status: 200, html });
 })();
 
 process.on('unhandledRejection', function (reason /*, p*/) {

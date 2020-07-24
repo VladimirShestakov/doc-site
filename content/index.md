@@ -8,6 +8,4 @@
 - Управление состоянияем на `redux` без middleware.
 - Роутинг с `react-router` и прямым доступом к объекту навигации.
 
-## ![GitHub](assets/github-icon_1_small.png){.icon} [GitHub](https://github.com/ylabio/react-skeleton) 📖 [**Документация** ](/docs/installation/new-project) {.links}
-
-
+## ![GitHub](assets/github-icon_1_small.png){.icon} [GitHub](https://github.com/ylabio/react-skeleton) 📖 [**Документация** ](docs) {.links}
