@@ -10,6 +10,13 @@ let config = {
     port: 8142,
     preloadState: true,
   },
+  content: {
+    target: 'https://raw.githubusercontent.com/VladimirShestakov/react-guide/develop',
+    secure: false,
+    changeOrigin: true,
+    patterns: ['/assets/**'],
+  },
+
   api: {
     // Обычно хост на апи относительный и используется прокси для устранения CORS
     baseURL: isWeb ? '' : 'http://localhost:8142',
@@ -17,11 +24,18 @@ let config = {
 
     // Прокси на апи, если режим разработки или ssr без nginx
     proxy: {
-      '/api/**': {
-        target: 'http://example.front.ylab.io',
-        secure: true,
-        changeOrigin: true,
-      },
+      // '/data/**': {
+      //   target: 'https://raw.githubusercontent.com/VladimirShestakov/doc-site/develop/content/',
+      //   secure: true,
+      //   changeOrigin: true,
+      //   //prependPath: false,
+      // },
+      // '/assets/**': {
+      //   target: 'https://raw.githubusercontent.com/VladimirShestakov/doc-site/develop/content/',
+      //   secure: true,
+      //   changeOrigin: true,
+      //   //prependPath: false,
+      // },
     },
   },
 

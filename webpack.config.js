@@ -60,9 +60,6 @@ let config = {
     }),
     new LoadablePlugin(),
     new MiniCssExtractPlugin(),
-    new CopyPlugin({
-      patterns: [{ from: '../content/assets', to: path.join(__dirname, 'dist', target, 'assets') }],
-    }),
   ],
   resolve: {
     extensions: ['.js', '.jsx'],
@@ -150,6 +147,11 @@ if (isWeb) {
       base: appConfig.navigation.basename,
     }),
   );
+  // config.plugins.push(
+  //   new CopyPlugin({
+  //     patterns: [{ from: '../content/assets', to: path.join(__dirname, 'dist', target, 'assets') }],
+  //   }),
+  // );
 }
 if (isNode) {
   config.externals = ['react-helmet', '@loadable/component' /*, nodeExternals()*/];

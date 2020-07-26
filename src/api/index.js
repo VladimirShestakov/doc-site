@@ -33,8 +33,10 @@ export default http;
 import Common from '@api/common';
 import Users from '@api/users';
 import Srr from '@api/ssr';
+import Content from '@api/content';
 
 export const ssr = new Srr(http);
 export const users = new Users(http);
+export const content = new Content(http);
 export const articles = new Common(http, 'articles');
 export const categories = new Common(http, 'categories');

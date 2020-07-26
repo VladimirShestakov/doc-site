@@ -56,13 +56,17 @@ function Document(props) {
     }),
   };
 
-  return (
-    <div
-      className="markdown-body"
-      dangerouslySetInnerHTML={{ __html: md.render(select.data) }}
-      onClick={callbacks.onClick}
-    />
-  );
+  if (select.wait) {
+    return <div>Загрузка...</div>;
+  } else {
+    return (
+      <div
+        className="markdown-body"
+        dangerouslySetInnerHTML={{ __html: md.render(select.data) }}
+        onClick={callbacks.onClick}
+      />
+    );
+  }
 }
 
 export default React.memo(Document);

@@ -9,9 +9,11 @@ import documentActions from '@store/document/actions';
 
 function Docs(props) {
   useInit(async () => {
-    await documentActions.init({
-      path: `docs/${props.match.params.page || 'index.md'}`,
-    });
+    let path = props.match.params.page;
+    if (!path.match(/\.md$/)) {
+      path += '/index.md';
+    }
+    await documentActions.init({ path });
   }, [props.match.params.page]);
 
   useInit(async () => {

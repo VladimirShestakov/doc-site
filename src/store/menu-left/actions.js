@@ -3,6 +3,7 @@ import * as api from '@api';
 import listToTree from '@utils/list-to-tree';
 import mc from 'merge-change';
 import treeToList from '@utils/tree-to-list';
+import {content as apiContent} from '@api';
 
 export const types = {
   SET: Symbol('SET'),
@@ -35,12 +36,13 @@ const actions = {
   load: async params => {
     store.dispatch({ type: types.SET, payload: { wait: true, errors: null } });
     try {
-      const result = await import(/* webpackChunkName: "menu.left" */ `@content/menu.left.json`);
+      //const result = await import(/* webpackChunkName: "menu.left" */ `@content/menu.left.json`);
+      const result = await apiContent.getOne({path: 'menu.left.json'});
       store.dispatch({
         type: types.SET,
         payload: {
-          roots: [result],
-          items: treeToList(result),
+          roots: [result.data],
+          items: treeToList(result.data),
           wait: false,
           errors: null,
         },

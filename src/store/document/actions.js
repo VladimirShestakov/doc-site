@@ -1,6 +1,7 @@
 import store from '@store';
 import mc from 'merge-change';
 import initState, { types } from './state.js';
+import {content as apiContent} from '@api';
 
 const actions = {
   /**
@@ -15,7 +16,7 @@ const actions = {
     // Сливаем новые параметры
     newParams = mc.merge(newParams, params);
     // Установка параметров и загрузка данных по ним
-    return actions.set(newParams, { mergeParams: false, loadData: true });
+    return actions.set(newParams, { mergeParams: false, loadData: true, clearData: true });
   },
 
   /**
@@ -66,13 +67,14 @@ const actions = {
 
       // Загрузка данные по новым параметрам
       if (options.loadData) {
-        console.log('load', newParams.path);
-        const page = await import(/* webpackChunkName: "content" */`@content/${newParams.path}`);
-
+        // console.log('load', newParams.path);
+        const page = await apiContent.getOne({path: newParams.path});
+        // console.log(page);
+        // const page = await import(/* webpackChunkName: "content" */`@content/${newParams.path}`);
         // Установка полученных данных в состояние
         store.dispatch({
           type: types.SET,
-          payload: { data: page.default, wait: false, errors: null },
+          payload: { data: page.data, wait: false, errors: null },
         });
       }
       return true;

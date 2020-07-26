@@ -15,7 +15,12 @@ const uniqid = require('uniqid');
 const app = express();
 
 // Отдача файлов кроме index.html
-app.use(express.static(path.resolve('./dist/web'), { index: false }));
+app.use(
+  express.static(path.resolve('./dist/web'), {
+    index: false,
+    //dotfiles: 'allow',
+  }),
+);
 app.use(express.json()); // for parsing application/json
 app.use(express.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
 app.use(cookieParser());
@@ -27,18 +32,28 @@ app.use(cookieParser());
 // });
 
 // Прокси на внешний сервер по конфигу
-// const proxy = httpProxy.createProxyServer({});
-// for (const path of Object.keys(config.api.proxy)) {
-//   console.log(`Proxy ${path} => ${config.api.proxy[path].target}`);
-//   app.all(path, async (req, res) => {
-//     try {
-//       proxy.web(req, res, config.api.proxy[path]);
-//     } catch (e) {
-//       console.error(e);
-//       res.send(500);
-//     }
-//   });
-// }
+const proxy = httpProxy.createProxyServer({});
+app.all('/content/**', async (req, res) => {
+  try {
+    req.url = req.url.replace(/^\/content/, '');
+    proxy.web(req, res, config.content);
+  } catch (e) {
+    console.error(e);
+    res.send(500);
+  }
+});
+
+for (const path of config.content.patterns) {
+  console.log(`Proxy ${path}`);
+  app.all(path, async (req, res) => {
+    try {
+      proxy.web(req, res, config.content);
+    } catch (e) {
+      console.error(e);
+      res.send(500);
+    }
+  });
+}
 
 let stateStorage = {};
 
